@@ -69,7 +69,7 @@ app.event("link_shared", async ({ event, client }) => {
       if (knowledge && knowledge.content && knowledge.title) {
         let text = knowledge.content;
         if (text.length > 200) {
-          text = text.slice(0, 200) + "..." + "\n\n<${link.url}|続きを読む>";
+          text = text.slice(0, 140) + "..." + `\n\n<${link.url}|続きを読む>`;
         }
 
         unfurls[link.url] = {
