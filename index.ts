@@ -81,7 +81,6 @@ app.event("link_shared", async ({ event, client }) => {
 
         unfurls[link.url] = {
           title: knowledge.emoji + " " +  knowledge.title,
-          author_name: "Next NJR Feedback",
           fields: [
             {
               title: "ブックマーク",
@@ -100,6 +99,7 @@ app.event("link_shared", async ({ event, client }) => {
             },
           ],
           text: text,
+          footer_icon: "https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/72x72/1f4a1.png",
           title_link: link.url,
           footer: dayjs(knowledge.updated_at).fromNow() + "に更新",
           color: "#0099D9",
@@ -152,6 +152,7 @@ app.event("link_shared", async ({ event, client }) => {
           text: discussion.content,
           title_link: link.url,
           footer: discussion.last_comment_created_at ? dayjs(discussion.last_comment_created_at).fromNow() + "にコメント追加" : dayjs(discussion.createdAt).fromNow() + "に作成",
+          footer_icon: "https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/72x72/1f4a1.png",
           color: "#0099D9",
         };
       }
