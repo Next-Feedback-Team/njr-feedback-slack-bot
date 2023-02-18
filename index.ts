@@ -3,9 +3,8 @@ import { LinkUnfurls } from "@slack/web-api";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
-
 dotenv.config();
+const prisma = new PrismaClient();
 
 const app = new SlackApp({
   token: process.env.SLACK_TOKEN,
