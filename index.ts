@@ -1,13 +1,13 @@
+import 'dayjs/locale/ja';
+
 import { App as SlackApp } from "@slack/bolt";
 import { LinkUnfurls } from "@slack/web-api";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs"
-
 import relativeTime from "dayjs/plugin/relativeTime"
-dayjs.extend(relativeTime)
 
-import 'dayjs/locale/ja';
+dayjs.extend(relativeTime)
 dayjs.locale('ja');
 
 dotenv.config();
