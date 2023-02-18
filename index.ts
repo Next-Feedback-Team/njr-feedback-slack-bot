@@ -2,6 +2,13 @@ import { App as SlackApp } from "@slack/bolt";
 import { LinkUnfurls } from "@slack/web-api";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
+import dayjs from "dayjs"
+
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(relativeTime)
+
+import 'dayjs/locale/ja';
+dayjs.locale('ja');
 
 dotenv.config();
 const prisma = new PrismaClient();
@@ -73,7 +80,7 @@ app.event("link_shared", async ({ event, client }) => {
         }
 
         unfurls[link.url] = {
-          title: knowledge.title,
+          title: knowledge.emoji + " " +  knowledge.title,
           author_name: "Next NJR Feedback",
           fields: [
             {
@@ -94,13 +101,20 @@ app.event("link_shared", async ({ event, client }) => {
           ],
           text: text,
           title_link: link.url,
-          footer: "Next NJR Feedback",
+          footer: dayjs(knowledge.updated_at).fromNow() + "に更新",
           color: "#0099D9",
         };
       }
     } else if (object.type == "discussion") {
       const discussion = await prisma.discussion.findFirst({
         include: {
+          user: {
+            select: {
+              image: true,
+              displayname: true,
+              handle: true,
+            }
+          },
           _count: {
             select: {
               comments: true,
@@ -112,11 +126,18 @@ app.event("link_shared", async ({ event, client }) => {
         },
       });
 
-      if (discussion) {
+      if (discussion && discussion.user.image && discussion.user.displayname) {
         unfurls[link.url] = {
           title: discussion.title,
-          author_name: "Next NJR Feedback",
+          author_name: discussion.user.displayname,
+          author_icon: discussion.user.image,
+          author_link: "https://nextnjrfeedback.net/users/" + discussion.user.handle,
           fields: [
+            {
+              title: "ステータス",
+              value: discussion.archive ? "アーカイブ済み" : "オープン",
+              short: true,
+            },
             {
               title: "コメント数",
               value: `${discussion._count.comments}件 `,
@@ -130,7 +151,7 @@ app.event("link_shared", async ({ event, client }) => {
           ],
           text: discussion.content,
           title_link: link.url,
-          footer: "Next NJR Feedback",
+          footer: discussion.last_comment_created_at ? dayjs(discussion.last_comment_created_at).fromNow() + "にコメント追加" : dayjs(discussion.createdAt).fromNow() + "に作成",
           color: "#0099D9",
         };
       }
