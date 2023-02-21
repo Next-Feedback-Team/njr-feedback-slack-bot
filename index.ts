@@ -11,11 +11,11 @@ dayjs.extend(relativeTime)
 dayjs.locale('ja');
 
 dotenv.config();
+
 const prisma = new PrismaClient();
 
 const app = new SlackApp({
   token: process.env.SLACK_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
   appToken: process.env.SLACK_APP_TOKEN,
   socketMode: true,
 });

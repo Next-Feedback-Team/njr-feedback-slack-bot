@@ -7,7 +7,7 @@
     "build": "tsc -p .",
     "start": "SET NODE_ENV=production & node dist/index.js"
   },
-  "repository": "https://github.com/yutakobayashidev/njr-feedback-slack-bot",
+  "repository": "https://github.com/Next-Feedback-Team/njr-feedback-slack-bot",
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^4.10.1",
